@@ -1,0 +1,1 @@
+SELECT * FROM `apis`.`details` LIMIT 1000;
