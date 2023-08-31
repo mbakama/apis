@@ -22,3 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/home',[DetailReclamation::class,'index']);
 Route::get('home/{nif}',[DetailReclamation::class,'show']);
 Route::get('hom/{nif}',[DetailReclamation::class,'v']);
+Route::get('recls', [DetailReclamation::class,'list']);
+// Route::get('reclamation/{id}', [DetailReclamation::class,'v']);
+Route::get('ver/{nif}',[DetailReclamation::class,'comb'])->name('relation');

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Detail;
-use App\Models\Detailsreclamation;
 use App\Models\Reclamation;
 use Illuminate\Http\Request;
+use App\Models\Detailsreclamation;
+use Illuminate\Support\Facades\DB;
 
 class DetailReclamation extends Controller
 {
@@ -31,8 +32,38 @@ class DetailReclamation extends Controller
             ]);
         }
     }
+    public function list()
+    {
+        $all = Reclamation::all();
+
+        if ($all!==null){
+            return response()->json(
+                [
+                    "status"=>200,
+                    "data"=>$all
+                ],200
+            );
+        } else {
+            return response()->json([
+                [
+                    "pas de donnees"
+                ], 404
+            ]);
+        }
+    }
+
+   
  
-    
+    public function comb($nif)
+    {
+       $all = DB::table('detailsreclamation')
+        ->select('*')
+        ->join('reclamation','reclamation.id','detailsreclamation.fk_Reclamation')
+        ->where('detailsreclamation.id',$nif)
+        ->get();
+
+return $all;
+    }
     /**
      * Show the form for creating a new resource.
      */
