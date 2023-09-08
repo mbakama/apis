@@ -17,18 +17,20 @@ class DetailReclamation extends Controller
     {
         $all = Detailsreclamation::all();
 
-        if ($all!==null){
+        if ($all !== null) {
             return response()->json(
                 [
-                    "status"=>200,
-                    "data"=>$all
-                ],200
+                    "status" => 200,
+                    "data" => $all
+                ],
+                200
             );
         } else {
             return response()->json([
                 [
                     "pas de donnees"
-                ], 404
+                ],
+                404
             ]);
         }
     }
@@ -36,33 +38,50 @@ class DetailReclamation extends Controller
     {
         $all = Reclamation::all();
 
-        if ($all!==null){
+        if ($all !== null) {
             return response()->json(
                 [
-                    "status"=>200,
-                    "data"=>$all
-                ],200
+                    "status" => 200,
+                    "data" => $all
+                ],
+                200
             );
         } else {
             return response()->json([
                 [
                     "pas de donnees"
-                ], 404
+                ],
+                404
             ]);
         }
     }
 
-   
- 
+
+
     public function comb($nif)
     {
-       $all = DB::table('detailsreclamation')
-        ->select('*')
-        ->join('reclamation','reclamation.id','detailsreclamation.fk_Reclamation')
-        ->where('detailsreclamation.id',$nif)
-        ->get();
+        $all = DB::table('reclamation')
+            ->select('*')
+            ->join('detailsreclamation', 'detailsreclamation.fk_Reclamation', 'reclamation.id')
+            ->where('reclamation.nif', $nif)
+            ->get();
 
-return $all;
+            if ($all !== null) {
+                return response()->json(
+                    [
+                        "status" => 201,
+                        "data" => $all
+                    ]
+                );
+            } else {
+                return response()->json([
+                    [
+                        "status" => 404,
+                        "data" => "pas de donnees"
+                    ],
+                    404
+                ]);
+            }
     }
     /**
      * Show the form for creating a new resource.
@@ -85,38 +104,43 @@ return $all;
      */
     public function show($nif)
     {
-        $show = Detailsreclamation::find($nif); 
-        if ($show!==null){
+        $show = Detailsreclamation::find($nif);
+        if ($show !== null) {
             return response()->json(
                 [
-                    "status"=>200,
-                    "data"=>$show
+                    "status" => 201,
+                    "data" => $show
                 ]
             );
         } else {
             return response()->json([
                 [
-                    "data"=>"pas de donnees"
-                ], 404
+                    "status" => 404,
+                    "data" => "pas de donnees"
+                ],
+                404
             ]);
         }
 
     }
 
-    public function v($nif){
-        $show = Reclamation::find($nif); 
-        if ($show!==null){
+    public function v($nif)
+    {
+        $show = Reclamation::find($nif);
+        if ($show !== null) {
             return response()->json(
                 [
-                    "status"=>200,
-                    "data"=>$show
+                    "status" => 200,
+                    "data" => $show
                 ]
             );
         } else {
             return response()->json([
                 [
-                    "data"=>"pas de donnees"
-                ], 404
+                    "status" => 404,
+                    "data" => "pas de donnees"
+                ],
+                404
             ]);
         }
     }
