@@ -29,3 +29,4 @@ Route::get('ver/{nif}',[DetailReclamation::class,'comb'])->name('relation');
 Route::get('books',[bookPriereController::class,'index']);
 Route::get('book/{bookId}',[bookPriereController::class,'bookId']);
 Route::get('book/{bookId}/priere',[bookPriereController::class,'priere']);
+// Route::get('reclamatiom/{nif}',[DetailReclamation::class,'all_data']);

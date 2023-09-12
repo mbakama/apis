@@ -15,24 +15,33 @@ class DetailReclamation extends Controller
      */
     public function index()
     {
-        $all = Detailsreclamation::all();
 
-        if ($all !== null) {
-            return response()->json(
-                [
-                    "status" => 200,
-                    "data" => $all
-                ],
-                200
-            );
-        } else {
-            return response()->json([
-                [
-                    "pas de donnees"
-                ],
-                404
-            ]);
-        }
+        $results = DB::table('reclamation')
+        ->select(
+            'reclamation.observation',
+            'reclamation.referenceCourrier as referenceCourrier',
+            'reclamation.typeReclamation as typeReclamation',
+            'reclamation.raisonSocial as raisonSocial',
+            'reclamation.adresse',
+            'reclamation.fk_AgentCreat as fk_AgentCreat',
+            'reclamation.nif',
+            'reclamation.fk_contribuable as fkcontribuable',
+            DB::raw("JSON_ARRAYAGG(JSON_OBJECT('montantConteste', detailsreclamation.montantConteste,'id',detailsreclamation.id, 'motifivationRecours', detailsreclamation.motifivationRecours, 'referenceTitrePerception', detailsreclamation.referenceTitrePerception, 'montantNonConteste', detailsreclamation.montantNonConteste, 'intituleActeGenerateur', detailsreclamation.intituleActeGenerateur, 'typedocument', detailsreclamation.typedocument, 'fkActeGenerateur', detailsreclamation.fkActeGenerateur, 'fk_AgentCreat', detailsreclamation.fk_AgentCreat, 'motivationReclamation', detailsreclamation.motivationReclamation, 'montantDu', detailsreclamation.montantDu, 'devise', detailsreclamation.devise, 'avecSurcis', detailsreclamation.avecSurcis)) as detailsReclamation")
+        )
+        ->join('detailsreclamation', 'reclamation.id', 'detailsreclamation.fk_Reclamation')
+        // ->where('reclamation.nif', $nif)
+        ->groupBy('reclamation.observation', 'reclamation.referenceCourrier', 'reclamation.typeReclamation', 'reclamation.raisonSocial', 'reclamation.adresse', 'reclamation.fk_AgentCreat', 'reclamation.nif', 'reclamation.fk_contribuable')
+        ->get();
+
+    // Convertir la chaîne JSON en tableau d'objets JSON
+    foreach ($results as $item) {
+        $item->detailsReclamation = json_decode($item->detailsReclamation);
+    }
+
+    $jsonData = json_encode($results);
+
+    return response()->json(['data'=>$results]);
+
     }
     public function list()
     {
@@ -66,22 +75,22 @@ class DetailReclamation extends Controller
             ->where('reclamation.nif', $nif)
             ->get();
 
-            if ($all !== null) {
-                return response()->json(
-                    [
-                        "status" => 201,
-                        "data" => $all
-                    ]
-                );
-            } else {
-                return response()->json([
-                    [
-                        "status" => 404,
-                        "data" => "pas de donnees"
-                    ],
-                    404
-                ]);
-            }
+        if ($all !== null) {
+            return response()->json(
+                [
+                    "status" => 201,
+                    "data" => $all
+                ]
+            );
+        } else {
+            return response()->json([
+                [
+                    "status" => 404,
+                    "data" => "pas de donnees"
+                ],
+                404
+            ]);
+        }
     }
     /**
      * Show the form for creating a new resource.

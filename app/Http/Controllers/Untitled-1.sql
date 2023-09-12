@@ -1,8 +1,7 @@
 -- Active: 1683614756393@@127.0.0.1@3306@apis
 
-INSERT INTO
-    detailsreclamation (
-        id,
+INSERT INTO detailsreclamation (
+         
         `referenceTitrePerception`,
         `motifivationRecours`,
         `motivationReclamation`,
@@ -17,18 +16,31 @@ INSERT INTO
         `intituleActeGenerateur`
     )
 VALUES (2,
-        "FFFFFF",
-        "Reclamation de WILNA",
-        "Taxe non conforme",
-        65,
-        140,
-        "Note Calcul",
-        205,
+        "REBBBFFN",
+        "Reclmation finished",
+        "Taxe conforme",
+        100,
+        20,
+        "Calculations",
+        10,
         1,
         "USD",
         2,
         -- 4,
-        "Déclaration sur l'IPP"
+        "Déclaration"
+    ),(2,
+        "AAABBFFN",
+        "Reclmation finished false",
+        "Taxe conforme 55",
+        100,
+        20,
+        "Calculations 22",
+        10,
+        1,
+        "USD",
+        2,
+        -- 4,
+        "Déclaration"
     )
 
     INSERT INTO reclamation 
